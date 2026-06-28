@@ -88,10 +88,32 @@
         .nav-scrolled {
             @apply bg-[#090d16]/80 backdrop-blur-md border-b border-slate-800/50 shadow-lg;
         }
+
+        /* Ambient Blob Animations */
+        @keyframes float {
+            0%, 100% { transform: translate(0, 0) scale(1); }
+            33% { transform: translate(30px, -50px) scale(1.1); }
+            66% { transform: translate(-20px, 20px) scale(0.9); }
+        }
+        .animate-float-slow {
+            animation: float 25s infinite ease-in-out;
+        }
+        .animate-float-slower {
+            animation: float 30s infinite ease-in-out reverse;
+        }
     </style>
     <link rel="stylesheet" href="./css/style.css">
 </head>
-<body class="bg-[#090d16] text-slate-300 font-sans antialiased selection:bg-teal-500/30 selection:text-teal-200 min-h-screen flex flex-col">
+<body class="bg-[#090d16] text-slate-300 font-sans antialiased selection:bg-teal-500/30 selection:text-teal-200 min-h-screen flex flex-col relative">
+
+    <!-- Ambient Moving Glow (Layer 1) -->
+    <div class="fixed inset-0 overflow-hidden pointer-events-none z-0">
+        <div class="absolute top-[10%] left-[20%] w-[500px] h-[500px] rounded-full bg-[#14b8a6] blur-[150px] opacity-15 animate-float-slow"></div>
+        <div class="absolute bottom-[10%] right-[20%] w-[600px] h-[600px] rounded-full bg-[#6366f1] blur-[150px] opacity-10 animate-float-slower"></div>
+    </div>
+
+    <!-- Engineering Grid Texture (Layer 2) -->
+    <div class="fixed inset-0 pointer-events-none z-0 mix-blend-overlay" style="background-image: radial-gradient(rgba(30, 41, 59, 0.6) 1px, transparent 1px); background-size: 24px 24px;"></div>
 
     <!-- Header / Navbar -->
     <header class="fixed w-full top-0 z-50 transition-all duration-300 nav-transparent">
@@ -133,7 +155,7 @@
     </header>
 
     <!-- Main Content -->
-    <main class="flex-grow pt-24">
+    <main class="flex-grow pt-24 relative z-10">
         
         <!-- Hero Section -->
         <section id="hero" class="min-h-[90vh] flex items-center relative overflow-hidden container mx-auto px-6 reveal-section">
@@ -331,34 +353,6 @@
             </div>
         </section>
 
-        <!-- Peer Reviews (Social Proof) Section -->
-        <section class="py-16 bg-[#090d16] border-t border-slate-800/60 reveal-section">
-            <div class="max-w-6xl mx-auto px-6">
-                <div class="flex items-center mb-12">
-                    <h2 class="text-3xl md:text-4xl font-bold tracking-tight text-slate-100">What Peers & Stakeholders Say</h2>
-                    <div class="h-px bg-slate-800 flex-grow ml-6"></div>
-                </div>
-                <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
-                    <!-- Review 1 -->
-                    <div class="bg-[#111827] p-8 rounded-xl border-l-4 border-emerald-500 shadow-lg group hover:border-emerald-400 transition-colors">
-                        <svg class="w-10 h-10 text-slate-700 mb-6 group-hover:text-emerald-500/20 transition-colors" fill="currentColor" viewBox="0 0 24 24"><path d="M14.017 21v-7.391c0-5.704 3.731-9.57 8.983-10.609l.995 2.151c-2.432.917-3.995 3.638-3.995 5.849h4v10h-9.983zm-14.017 0v-7.391c0-5.704 3.748-9.57 9-10.609l.996 2.151c-2.433.917-3.996 3.638-3.996 5.849h3.983v10h-9.983z"/></svg>
-                        <blockquote class="text-slate-300 leading-[1.25] text-lg mb-6">
-                            "Faheem’s application of Agile frameworks as Director of Management kept our 15-person cross-functional engineering team completely aligned. His ability to unblock technical barriers while maintaining timeline velocity was outstanding."
-                        </blockquote>
-                        <p class="font-bold tracking-tight text-emerald-400">— Technical Lead, CATCH-VR Project</p>
-                    </div>
-                    
-                    <!-- Review 2 -->
-                    <div class="bg-[#111827] p-8 rounded-xl border-l-4 border-blue-500 shadow-lg group hover:border-blue-400 transition-colors">
-                        <svg class="w-10 h-10 text-slate-700 mb-6 group-hover:text-blue-500/20 transition-colors" fill="currentColor" viewBox="0 0 24 24"><path d="M14.017 21v-7.391c0-5.704 3.731-9.57 8.983-10.609l.995 2.151c-2.432.917-3.995 3.638-3.995 5.849h4v10h-9.983zm-14.017 0v-7.391c0-5.704 3.748-9.57 9-10.609l.996 2.151c-2.433.917-3.996 3.638-3.996 5.849h3.983v10h-9.983z"/></svg>
-                        <blockquote class="text-slate-300 leading-[1.25] text-lg mb-6">
-                            "Exceptional negotiation and operational foresight. Faheem single-handedly secured major stakeholder funding for our symposium and restructured our chapter's financial workflows to save 20% in infrastructure costs."
-                        </blockquote>
-                        <p class="font-bold tracking-tight text-blue-400">— Executive Board Member, PEF QUEST</p>
-                    </div>
-                </div>
-            </div>
-        </section>
 
         <!-- Projects Section -->
         <section id="projects" class="py-24 container mx-auto px-6 reveal-section">
@@ -372,7 +366,7 @@
                     <!-- Project 1 -->
                     <div class="group flex flex-col bg-[#111827] rounded-2xl overflow-hidden border border-slate-700/60 hover:border-indigo-500/50 hover:shadow-2xl hover:shadow-indigo-500/10 transition-all duration-300 transform hover:-translate-y-1.5">
                         <div class="h-48 rounded-t-xl overflow-hidden relative group">
-                            <img src="https://images.unsplash.com/photo-1618005182384-a83a8bd57fbe?w=500&auto=format&fit=crop" alt="Abstract Matrix and Data Flow" class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500">
+                            <img src="https://images.unsplash.com/photo-1634017839464-5c339ebe3cb4?w=500&auto=format&fit=crop" alt="Abstract Matrix and Data Flow" class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500">
                             <div class="absolute inset-0 bg-slate-950/20 group-hover:opacity-0 transition-opacity duration-300"></div>
                         </div>
                         <div class="p-6 flex flex-col flex-grow">
@@ -434,7 +428,7 @@
                             <div class="absolute inset-0 bg-slate-950/20 group-hover:opacity-0 transition-opacity duration-300"></div>
                         </div>
                         <div class="p-6 flex flex-col flex-grow">
-                            <h3 class="text-xl font-bold text-white mb-2 group-hover:text-purple-400 transition-colors">Cloud-Integrated School Management System (Grades 1-8)</h3>
+                            <h3 class="text-xl font-bold text-white mb-2 group-hover:text-purple-400 transition-colors">Cloud-Integrated School Management System</h3>
                             <p class="text-slate-400 mb-6 text-sm flex-grow">
                                 Engineered a centralized administrative tracking database covering academic tiers from grade 1 to grade 8. Implemented full data synchronization to monitor Monthly Fees, Total Paid Ledgers, and Remaining Balances with dynamic Paid/Pending tracking grids.
                             </p>
@@ -575,6 +569,72 @@
             </div>
         </section>
 
+        <!-- Client & Peer Reviews Section -->
+        <section class="py-16 bg-[#090d16] border-t border-slate-800/60 reveal-section">
+            <div class="max-w-6xl mx-auto px-6">
+                <div class="flex items-center mb-12">
+                    <h2 class="text-3xl md:text-4xl font-bold tracking-tight text-slate-100">Client & Peer Reviews</h2>
+                    <div class="h-px bg-slate-800 flex-grow ml-6"></div>
+                </div>
+                
+                <div class="grid grid-cols-1 lg:grid-cols-2 gap-12">
+                    <!-- Left: Reviews List -->
+                    <div class="space-y-6">
+                        <!-- Review 1 -->
+                        <div class="bg-[#111827] p-8 rounded-xl border-l-4 border-emerald-500 shadow-lg group hover:border-emerald-400 transition-colors">
+                            <svg class="w-8 h-8 text-slate-700 mb-4 group-hover:text-emerald-500/20 transition-colors" fill="currentColor" viewBox="0 0 24 24"><path d="M14.017 21v-7.391c0-5.704 3.731-9.57 8.983-10.609l.995 2.151c-2.432.917-3.995 3.638-3.995 5.849h4v10h-9.983zm-14.017 0v-7.391c0-5.704 3.748-9.57 9-10.609l.996 2.151c-2.433.917-3.996 3.638-3.996 5.849h3.983v10h-9.983z"/></svg>
+                            <blockquote class="text-slate-300 leading-[1.25] text-lg mb-4">
+                                "Faheem’s application of Agile frameworks kept our 15-person team completely aligned."
+                            </blockquote>
+                            <p class="font-bold tracking-tight text-emerald-400 text-sm">— Technical Lead, CATCH-VR Project</p>
+                        </div>
+                        
+                        <!-- Review 2 -->
+                        <div class="bg-[#111827] p-8 rounded-xl border-l-4 border-blue-500 shadow-lg group hover:border-blue-400 transition-colors">
+                            <svg class="w-8 h-8 text-slate-700 mb-4 group-hover:text-blue-500/20 transition-colors" fill="currentColor" viewBox="0 0 24 24"><path d="M14.017 21v-7.391c0-5.704 3.731-9.57 8.983-10.609l.995 2.151c-2.432.917-3.995 3.638-3.995 5.849h4v10h-9.983zm-14.017 0v-7.391c0-5.704 3.748-9.57 9-10.609l.996 2.151c-2.433.917-3.996 3.638-3.996 5.849h3.983v10h-9.983z"/></svg>
+                            <blockquote class="text-slate-300 leading-[1.25] text-lg mb-4">
+                                "Exceptional negotiation. Faheem secured major funding and saved 20% in infrastructure costs."
+                            </blockquote>
+                            <p class="font-bold tracking-tight text-blue-400 text-sm">— Executive Board Member, PEF QUEST</p>
+                        </div>
+                    </div>
+
+                    <!-- Right: Submission Form -->
+                    <div class="bg-slate-850 p-8 rounded-2xl border border-slate-700 shadow-xl relative overflow-hidden h-fit">
+                        <div class="absolute inset-0 bg-gradient-to-br from-indigo-900/10 to-transparent pointer-events-none"></div>
+                        <div class="relative z-10 mb-6">
+                            <h3 class="text-2xl font-bold text-white">Leave a Review</h3>
+                            <p class="text-slate-400 text-sm mt-1">Your feedback helps me grow and improves future collaborations.</p>
+                        </div>
+                        <form action="https://formsubmit.co/faheemtahir247@gmail.com" method="POST" class="relative z-10 flex flex-col space-y-4">
+                            <input type="hidden" name="_subject" value="⭐ New Student/Client Review Submitted!">
+                            <input type="hidden" name="_next" value="https://muhammad-faheem247.github.io/">
+                            <input type="hidden" name="_captcha" value="false">
+                            
+                            <div class="flex flex-col space-y-1.5">
+                                <label class="text-sm font-medium text-slate-400">Your Name</label>
+                                <input type="text" name="Name" required class="w-full bg-[#090d16] border border-slate-700/60 rounded-lg px-4 py-3 text-slate-50 focus:outline-none focus:border-indigo-500 focus:ring-1 focus:ring-indigo-500 transition-colors placeholder-slate-600">
+                            </div>
+                            <div class="flex flex-col space-y-1.5">
+                                <label class="text-sm font-medium text-slate-400">Your Designation/Role</label>
+                                <input type="text" name="Designation" required class="w-full bg-[#090d16] border border-slate-700/60 rounded-lg px-4 py-3 text-slate-50 focus:outline-none focus:border-indigo-500 focus:ring-1 focus:ring-indigo-500 transition-colors placeholder-slate-600">
+                            </div>
+                            <div class="flex flex-col space-y-1.5">
+                                <label class="text-sm font-medium text-slate-400">Your Feedback/Review</label>
+                                <textarea name="Feedback" rows="3" required class="w-full bg-[#090d16] border border-slate-700/60 rounded-lg px-4 py-3 text-slate-50 focus:outline-none focus:border-indigo-500 focus:ring-1 focus:ring-indigo-500 transition-colors placeholder-slate-600 resize-none"></textarea>
+                            </div>
+                            <button type="submit" class="relative group p-[2px] rounded-lg overflow-hidden transition-all duration-300 ease-out hover:shadow-[0_0_30px_rgba(99,102,241,0.3)] hover:-translate-y-1 w-full mt-2">
+                                <span class="absolute inset-0 bg-gradient-to-r from-indigo-500 to-purple-500 opacity-75 group-hover:opacity-100 transition-opacity duration-300 ease-out"></span>
+                                <div class="relative bg-[#090d16] group-hover:bg-transparent transition-colors duration-300 ease-out px-8 py-3 rounded-[6px] flex justify-center items-center">
+                                    <span class="text-slate-50 font-bold group-hover:text-white transition-colors duration-300">Submit Review</span>
+                                </div>
+                            </button>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </section>
+
         <!-- Contact Section -->
         <section id="contact" class="py-24 container mx-auto px-6 reveal-section">
             <div class="max-w-5xl mx-auto">
@@ -624,18 +684,23 @@
                     <!-- Contact Form -->
                     <div class="bg-slate-850 p-8 rounded-2xl border border-slate-700 shadow-xl relative overflow-hidden">
                         <div class="absolute inset-0 bg-gradient-to-br from-emerald-900/10 to-transparent pointer-events-none"></div>
-                        <form class="relative z-10 flex flex-col space-y-5">
+                        <form id="contact-form" action="https://formsubmit.co/faheemtahir247@gmail.com" method="POST" class="relative z-10 flex flex-col space-y-5">
+                            <!-- FormSubmit Configuration -->
+                            <input type="hidden" name="_next" value="https://muhammad-faheem247.github.io/">
+                            <input type="hidden" name="_subject" value="New Portfolio Message from Muhammad Faheem's Website!">
+                            <input type="hidden" name="_captcha" value="false">
+                            
                             <div class="flex flex-col space-y-1.5">
                                 <label for="name" class="text-sm font-medium text-slate-400">Name</label>
-                                <input type="text" id="name" placeholder="John Doe" class="w-full bg-[#090d16] border border-slate-700/60 rounded-lg px-4 py-3 text-slate-50 focus:outline-none focus:border-teal-500 focus:ring-1 focus:ring-teal-500 transition-colors placeholder-slate-600">
+                                <input type="text" id="name" name="name" placeholder="John Doe" required class="w-full bg-[#090d16] border border-slate-700/60 rounded-lg px-4 py-3 text-slate-50 focus:outline-none focus:border-teal-500 focus:ring-1 focus:ring-teal-500 transition-colors placeholder-slate-600">
                             </div>
                             <div class="flex flex-col space-y-1.5">
                                 <label for="email" class="text-sm font-medium text-slate-400">Email Address</label>
-                                <input type="email" id="email" placeholder="john@example.com" class="w-full bg-[#090d16] border border-slate-700/60 rounded-lg px-4 py-3 text-slate-50 focus:outline-none focus:border-teal-500 focus:ring-1 focus:ring-teal-500 transition-colors placeholder-slate-600">
+                                <input type="email" id="email" name="email" placeholder="john@example.com" required class="w-full bg-[#090d16] border border-slate-700/60 rounded-lg px-4 py-3 text-slate-50 focus:outline-none focus:border-teal-500 focus:ring-1 focus:ring-teal-500 transition-colors placeholder-slate-600">
                             </div>
                             <div class="flex flex-col space-y-1.5">
                                 <label for="message" class="text-sm font-medium text-slate-400">Message</label>
-                                <textarea id="message" rows="4" placeholder="How can I help you?" class="w-full bg-[#090d16] border border-slate-700/60 rounded-lg px-4 py-3 text-slate-50 focus:outline-none focus:border-teal-500 focus:ring-1 focus:ring-teal-500 transition-colors placeholder-slate-600 resize-none"></textarea>
+                                <textarea id="message" name="message" rows="4" placeholder="How can I help you?" required class="w-full bg-[#090d16] border border-slate-700/60 rounded-lg px-4 py-3 text-slate-50 focus:outline-none focus:border-teal-500 focus:ring-1 focus:ring-teal-500 transition-colors placeholder-slate-600 resize-none"></textarea>
                             </div>
                             <!-- Glow Border Button for Contact -->
                             <button type="submit" class="relative group p-[2px] rounded-lg overflow-hidden transition-all duration-300 ease-out hover:shadow-[0_0_30px_rgba(20,184,166,0.3)] hover:-translate-y-1 w-full mt-2">
@@ -645,6 +710,7 @@
                                     <svg class="w-5 h-5 text-slate-50 group-hover:text-white transition-colors duration-300" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 19l9 2-9-18-9 18 9-2zm0 0v-8"></path></svg>
                                 </div>
                             </button>
+                            <div id="form-result" class="hidden text-center text-teal-400 font-medium py-2 rounded-lg bg-teal-500/10 border border-teal-500/20 transition-opacity duration-500 opacity-0"></div>
                         </form>
                     </div>
 
@@ -655,7 +721,7 @@
     </main>
 
     <!-- Certifications & Languages Mini-Section -->
-    <section class="py-12 bg-[#111827] border-t border-slate-800/60 reveal-section">
+    <section class="py-12 bg-[#111827] border-t border-slate-800/60 reveal-section relative z-10">
         <div class="container mx-auto px-6">
             <div class="flex flex-col md:flex-row justify-between items-start md:items-center space-y-6 md:space-y-0 max-w-5xl mx-auto">
                 <div>
@@ -680,7 +746,7 @@
     </section>
 
     <!-- Footer -->
-    <footer class="py-8 border-t border-slate-800/60 bg-[#090d16] text-center">
+    <footer class="py-8 border-t border-slate-800/60 bg-[#090d16] text-center relative z-10">
         <div class="container mx-auto px-6 flex flex-col md:flex-row justify-between items-center">
             <p class="text-slate-400 text-sm mb-4 md:mb-0">
                 &copy; <span id="year">2026</span> Muhammad Faheem. All rights reserved.
